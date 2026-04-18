@@ -1,0 +1,382 @@
+$ python3 gan_model_v1.1.py
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1776466888.098765   20499 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1776466888.803213   20499 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI AVX512_BF16 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1776466902.999090   20499 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+(489, 489, 3) (256, 256, 3)
+244 0 255 0
+Found 8164 files.
+Using 7348 files for training.
+I0000 00:00:1776466913.870187   20499 gpu_device.cc:2043] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 21764 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+Found 8164 files.
+Using 816 files for validation.
+Found 8164 files.
+Using 7348 files for training.
+Found 8164 files.
+Using 816 files for validation.
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_v1.1.py:110: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+(32, 256, 256, 3) (32, 256, 256, 3)
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_v1.1.py:126: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+(32, 256, 256, 3) (32, 256, 256, 3)
+Model: "functional_15"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                  ┃ Output Shape              ┃         Param # ┃ Connected to               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)      │ (None, 256, 256, 3)       │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential (Sequential)       │ (None, 128, 128, 32)      │             864 │ input_layer[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_1 (Sequential)     │ (None, 64, 64, 64)        │          18,688 │ sequential[0][0]           │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_2 (Sequential)     │ (None, 32, 32, 64)        │          37,120 │ sequential_1[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_3 (Sequential)     │ (None, 16, 16, 128)       │          74,240 │ sequential_2[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_4 (Sequential)     │ (None, 8, 8, 128)         │         147,968 │ sequential_3[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_5 (Sequential)     │ (None, 4, 4, 256)         │         295,936 │ sequential_4[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_6 (Sequential)     │ (None, 2, 2, 256)         │         590,848 │ sequential_5[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_7 (Sequential)     │ (None, 1, 1, 256)         │         590,848 │ sequential_6[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_8 (Sequential)     │ (None, 2, 2, 256)         │         590,848 │ sequential_7[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate (Concatenate)     │ (None, 2, 2, 512)         │               0 │ sequential_8[0][0],        │
+│                               │                           │                 │ sequential_6[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_9 (Sequential)     │ (None, 4, 4, 256)         │       1,180,672 │ concatenate[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_1 (Concatenate)   │ (None, 4, 4, 512)         │               0 │ sequential_9[0][0],        │
+│                               │                           │                 │ sequential_5[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_10 (Sequential)    │ (None, 8, 8, 128)         │         590,336 │ concatenate_1[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_2 (Concatenate)   │ (None, 8, 8, 256)         │               0 │ sequential_10[0][0],       │
+│                               │                           │                 │ sequential_4[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_11 (Sequential)    │ (None, 16, 16, 128)       │         295,424 │ concatenate_2[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_3 (Concatenate)   │ (None, 16, 16, 256)       │               0 │ sequential_11[0][0],       │
+│                               │                           │                 │ sequential_3[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_12 (Sequential)    │ (None, 32, 32, 64)        │         147,712 │ concatenate_3[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_4 (Concatenate)   │ (None, 32, 32, 128)       │               0 │ sequential_12[0][0],       │
+│                               │                           │                 │ sequential_2[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_13 (Sequential)    │ (None, 64, 64, 64)        │          73,984 │ concatenate_4[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_5 (Concatenate)   │ (None, 64, 64, 128)       │               0 │ sequential_13[0][0],       │
+│                               │                           │                 │ sequential_1[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_14 (Sequential)    │ (None, 128, 128, 32)      │          36,992 │ concatenate_5[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_6 (Concatenate)   │ (None, 128, 128, 64)      │               0 │ sequential_14[0][0],       │
+│                               │                           │                 │ sequential[0][0]           │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv2d_transpose_7            │ (None, 256, 256, 3)       │           4,803 │ concatenate_6[0][0]        │
+│ (Conv2DTranspose)             │                           │                 │                            │
+└───────────────────────────────┴───────────────────────────┴─────────────────┴────────────────────────────┘
+ Total params: 4,677,283 (17.84 MB)
+ Trainable params: 4,673,123 (17.83 MB)
+ Non-trainable params: 4,160 (16.25 KB)
+Model: "functional_19"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                  ┃ Output Shape              ┃         Param # ┃ Connected to               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ input_image (InputLayer)      │ (None, 256, 256, 3)       │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ target_image (InputLayer)     │ (None, 256, 256, 3)       │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_7 (Concatenate)   │ (None, 256, 256, 6)       │               0 │ input_image[0][0],         │
+│                               │                           │                 │ target_image[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_15 (Sequential)    │ (None, 128, 128, 64)      │           3,456 │ concatenate_7[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_16 (Sequential)    │ (None, 64, 64, 128)       │          74,240 │ sequential_15[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_17 (Sequential)    │ (None, 32, 32, 256)       │         295,936 │ sequential_16[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ zero_padding2d                │ (None, 34, 34, 256)       │               0 │ sequential_17[0][0]        │
+│ (ZeroPadding2D)               │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv2d_11 (Conv2D)            │ (None, 32, 32, 512)       │       1,179,648 │ zero_padding2d[0][0]       │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_16        │ (None, 32, 32, 512)       │           2,048 │ conv2d_11[0][0]            │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ leaky_re_lu_11 (LeakyReLU)    │ (None, 32, 32, 512)       │               0 │ batch_normalization_16[0]… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ zero_padding2d_1              │ (None, 34, 34, 512)       │               0 │ leaky_re_lu_11[0][0]       │
+│ (ZeroPadding2D)               │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv2d_12 (Conv2D)            │ (None, 32, 32, 1)         │           4,609 │ zero_padding2d_1[0][0]     │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ flatten (Flatten)             │ (None, 1024)              │               0 │ conv2d_12[0][0]            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ dense (Dense)                 │ (None, 1)                 │           1,025 │ flatten[0][0]              │
+└───────────────────────────────┴───────────────────────────┴─────────────────┴────────────────────────────┘
+ Total params: 1,560,962 (5.95 MB)
+ Trainable params: 1,559,170 (5.95 MB)
+ Non-trainable params: 1,792 (7.00 KB)
+Epoch:  1
+I0000 00:00:1776466918.623137   20499 cuda_dnn.cc:461] Loaded cuDNN version 92100
+Time: 97.59888625144958 sec, gen loss = 2936.680908203125, disc loss = 227.2047882080078.
+Epoch:  2
+Time: 88.39966821670532 sec, gen loss = 1779.9959716796875, disc loss = 235.26901245117188.
+Epoch:  3
+Time: 88.55566120147705 sec, gen loss = 1563.67138671875, disc loss = 234.43934631347656.
+Epoch:  4
+Time: 88.36176776885986 sec, gen loss = 1388.9228515625, disc loss = 254.27105712890625.
+Epoch:  5
+Time: 88.55326843261719 sec, gen loss = 1338.385009765625, disc loss = 232.78359985351562.
+Epoch:  6
+Time: 88.67979121208191 sec, gen loss = 1331.830078125, disc loss = 220.37509155273438.
+Epoch:  7
+Time: 88.65148067474365 sec, gen loss = 1286.8203125, disc loss = 223.84573364257812.
+Epoch:  8
+Time: 88.57852339744568 sec, gen loss = 1232.6217041015625, disc loss = 231.67562866210938.
+Epoch:  9
+Time: 88.62561440467834 sec, gen loss = 1201.364501953125, disc loss = 243.88922119140625.
+Epoch:  10
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0752715].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0813416].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0910836].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.074333].
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_v1.1.py:318: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+Time: 89.42273902893066 sec, gen loss = 1192.4654541015625, disc loss = 228.14923095703125.
+Epoch:  11
+Time: 88.96478939056396 sec, gen loss = 1199.43359375, disc loss = 218.96441650390625.
+Epoch:  12
+Time: 88.62163853645325 sec, gen loss = 1217.373779296875, disc loss = 208.57913208007812.
+Epoch:  13
+Time: 88.84369373321533 sec, gen loss = 1163.001220703125, disc loss = 204.8354034423828.
+Epoch:  14
+Time: 88.98480415344238 sec, gen loss = 1177.64794921875, disc loss = 195.50437927246094.
+Epoch:  15
+Time: 88.98002219200134 sec, gen loss = 1197.178466796875, disc loss = 209.6887969970703.
+Epoch:  16
+Time: 89.12263178825378 sec, gen loss = 1147.8017578125, disc loss = 196.9862518310547.
+Epoch:  17
+Time: 88.90770530700684 sec, gen loss = 1165.42236328125, disc loss = 210.46739196777344.
+Epoch:  18
+Time: 89.15277767181396 sec, gen loss = 1151.273681640625, disc loss = 188.16937255859375.
+Epoch:  19
+Time: 88.74919199943542 sec, gen loss = 1177.0289306640625, disc loss = 193.56536865234375.
+Epoch:  20
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..2.6912744].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0173197].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0077525].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1084403].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.5011172].
+Time: 89.62157320976257 sec, gen loss = 1158.955078125, disc loss = 171.0315704345703.
+Epoch:  21
+Time: 89.00918626785278 sec, gen loss = 1183.36474609375, disc loss = 169.08282470703125.
+Epoch:  22
+Time: 89.20586061477661 sec, gen loss = 1260.26611328125, disc loss = 164.314697265625.
+Epoch:  23
+Time: 89.19393420219421 sec, gen loss = 1213.0809326171875, disc loss = 162.2505340576172.
+Epoch:  24
+Time: 89.38697504997253 sec, gen loss = 1281.47802734375, disc loss = 168.29306030273438.
+Epoch:  25
+Time: 89.05656838417053 sec, gen loss = 1274.29248046875, disc loss = 143.64329528808594.
+Epoch:  26
+Time: 89.06823420524597 sec, gen loss = 1279.087646484375, disc loss = 141.665283203125.
+Epoch:  27
+Time: 89.06789541244507 sec, gen loss = 1287.6234130859375, disc loss = 142.45899963378906.
+Epoch:  28
+Time: 89.22738361358643 sec, gen loss = 1270.0595703125, disc loss = 139.2242889404297.
+Epoch:  29
+Time: 89.1976900100708 sec, gen loss = 1299.879638671875, disc loss = 147.35227966308594.
+Epoch:  30
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..3.5728626].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2578111].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2228985].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.5826735].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1780137].
+Time: 89.31916570663452 sec, gen loss = 1297.23095703125, disc loss = 131.20240783691406.
+Epoch:  31
+Time: 89.22015357017517 sec, gen loss = 1346.2501220703125, disc loss = 138.422607421875.
+Epoch:  32
+Time: 89.29777193069458 sec, gen loss = 1292.7540283203125, disc loss = 110.0777587890625.
+Epoch:  33
+Time: 89.38146924972534 sec, gen loss = 1321.179443359375, disc loss = 182.3931884765625.
+Epoch:  34
+Time: 89.49970293045044 sec, gen loss = 1332.7369384765625, disc loss = 92.3708724975586.
+Epoch:  35
+Time: 89.3077347278595 sec, gen loss = 1357.87548828125, disc loss = 124.07398986816406.
+Epoch:  36
+Time: 89.3743724822998 sec, gen loss = 1357.97802734375, disc loss = 107.47021484375.
+Epoch:  37
+Time: 89.28091597557068 sec, gen loss = 1425.0494384765625, disc loss = 122.5164794921875.
+Epoch:  38
+Time: 89.35912609100342 sec, gen loss = 1364.087890625, disc loss = 100.85248565673828.
+Epoch:  39
+Time: 89.3080472946167 sec, gen loss = 1391.7471923828125, disc loss = 126.31822967529297.
+Epoch:  40
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1059594].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2412871].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2587112].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1280327].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1185118].
+Time: 89.84923458099365 sec, gen loss = 1368.8150634765625, disc loss = 96.38793182373047.
+Epoch:  41
+Time: 89.48967504501343 sec, gen loss = 1415.4144287109375, disc loss = 119.13309478759766.
+Epoch:  42
+Time: 88.86167216300964 sec, gen loss = 1389.891845703125, disc loss = 140.79058837890625.
+Epoch:  43
+Time: 89.4153790473938 sec, gen loss = 1423.108642578125, disc loss = 88.5963363647461.
+Epoch:  44
+Time: 89.28315663337708 sec, gen loss = 1398.30908203125, disc loss = 109.57142639160156.
+Epoch:  45
+Time: 89.36050653457642 sec, gen loss = 1387.9039306640625, disc loss = 99.3768310546875.
+Epoch:  46
+Time: 89.23360657691956 sec, gen loss = 1431.5904541015625, disc loss = 121.20399475097656.
+Epoch:  47
+Time: 89.54201126098633 sec, gen loss = 1390.523193359375, disc loss = 73.64757537841797.
+Epoch:  48
+Time: 89.50208163261414 sec, gen loss = 1492.442138671875, disc loss = 116.1441879272461.
+Epoch:  49
+Time: 89.18467831611633 sec, gen loss = 1519.35107421875, disc loss = 128.08335876464844.
+Epoch:  50
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1321445].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.191396].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1045343].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0807242].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.225307].
+Time: 90.39478945732117 sec, gen loss = 1416.07470703125, disc loss = 77.74459075927734.
+Epoch:  51
+Time: 89.31012630462646 sec, gen loss = 1485.7818603515625, disc loss = 113.31549835205078.
+Epoch:  52
+Time: 89.76061749458313 sec, gen loss = 1406.483154296875, disc loss = 82.73571014404297.
+Epoch:  53
+Time: 89.89935684204102 sec, gen loss = 1478.0928955078125, disc loss = 91.89020538330078.
+Epoch:  54
+Time: 89.57680320739746 sec, gen loss = 1460.3685302734375, disc loss = 73.55204010009766.
+Epoch:  55
+Time: 89.37078046798706 sec, gen loss = 1486.552001953125, disc loss = 103.78971099853516.
+Epoch:  56
+Time: 89.74081683158875 sec, gen loss = 1513.2242431640625, disc loss = 94.58748626708984.
+Epoch:  57
+Time: 89.57706952095032 sec, gen loss = 1505.5728759765625, disc loss = 97.96372985839844.
+Epoch:  58
+Time: 89.73393988609314 sec, gen loss = 1489.5377197265625, disc loss = 69.10797882080078.
+Epoch:  59
+Time: 90.68239951133728 sec, gen loss = 1471.0714111328125, disc loss = 114.98750305175781.
+Epoch:  60
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.108079].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1003551].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.3600467].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1489115].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.131322].
+Time: 89.90535926818848 sec, gen loss = 1514.0660400390625, disc loss = 49.653663635253906.
+Epoch:  61
+Time: 89.41640043258667 sec, gen loss = 1528.0108642578125, disc loss = 117.36498260498047.
+Epoch:  62
+Time: 89.26114511489868 sec, gen loss = 1554.861572265625, disc loss = 111.54041290283203.
+Epoch:  63
+Time: 89.2279007434845 sec, gen loss = 1462.42236328125, disc loss = 65.97815704345703.
+Epoch:  64
+Time: 89.53839898109436 sec, gen loss = 1498.453369140625, disc loss = 99.45164489746094.
+Epoch:  65
+Time: 89.80884099006653 sec, gen loss = 1514.6103515625, disc loss = 83.9541244506836.
+Epoch:  66
+Time: 89.50502490997314 sec, gen loss = 1519.85107421875, disc loss = 90.51434326171875.
+Epoch:  67
+Time: 89.44224452972412 sec, gen loss = 1508.6422119140625, disc loss = 56.56882858276367.
+Epoch:  68
+Time: 89.665931224823 sec, gen loss = 1520.5828857421875, disc loss = 109.92558288574219.
+Epoch:  69
+Time: 89.51704573631287 sec, gen loss = 1511.10595703125, disc loss = 92.33055877685547.
+Epoch:  70
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.104044].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0809255].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1104145].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1516153].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1867085].
+Time: 90.48524618148804 sec, gen loss = 1533.6448974609375, disc loss = 89.0984115600586.
+Epoch:  71
+Time: 89.3979799747467 sec, gen loss = 1533.3756103515625, disc loss = 70.93331909179688.
+Epoch:  72
+Time: 89.490718126297 sec, gen loss = 1510.6849365234375, disc loss = 70.30148315429688.
+Epoch:  73
+Time: 89.52797079086304 sec, gen loss = 1560.1102294921875, disc loss = 28.023481369018555.
+Epoch:  74
+Time: 89.51031517982483 sec, gen loss = 1466.74609375, disc loss = 178.48741149902344.
+Epoch:  75
+Time: 89.31850743293762 sec, gen loss = 1542.9696044921875, disc loss = 85.19696807861328.
+Epoch:  76
+Time: 89.85742521286011 sec, gen loss = 1503.3751220703125, disc loss = 81.74169921875.
+Epoch:  77
+Time: 89.6875205039978 sec, gen loss = 1491.4420166015625, disc loss = 57.15240478515625.
+Epoch:  78
+Time: 89.64938855171204 sec, gen loss = 1511.9620361328125, disc loss = 110.84615325927734.
+Epoch:  79
+Time: 90.76238894462585 sec, gen loss = 1549.78271484375, disc loss = 76.59446716308594.
+Epoch:  80
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1006529].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1754326].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.4794732].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1796298].
+Time: 90.40704774856567 sec, gen loss = 1532.2889404296875, disc loss = 60.85796356201172.
+Epoch:  81
+Time: 89.31329941749573 sec, gen loss = 1521.8798828125, disc loss = 70.83444213867188.
+Epoch:  82
+Time: 89.53032493591309 sec, gen loss = 1579.5380859375, disc loss = 78.50401306152344.
+Epoch:  83
+Time: 89.48264861106873 sec, gen loss = 1549.1572265625, disc loss = 58.46519088745117.
+Epoch:  84
+Time: 90.36738920211792 sec, gen loss = 1547.408447265625, disc loss = 94.34949493408203.
+Epoch:  85
+Time: 89.67716836929321 sec, gen loss = 1546.7806396484375, disc loss = 62.956443786621094.
+Epoch:  86
+Time: 90.07157802581787 sec, gen loss = 1544.4156494140625, disc loss = 79.50322723388672.
+Epoch:  87
+Time: 89.90696573257446 sec, gen loss = 1551.4473876953125, disc loss = 71.63040161132812.
+Epoch:  88
+Time: 89.63821315765381 sec, gen loss = 1572.335693359375, disc loss = 22.426273345947266.
+Epoch:  89
+Time: 89.71107268333435 sec, gen loss = 1557.3583984375, disc loss = 110.89004516601562.
+Epoch:  90
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1732446].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.7702861].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.4584274].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1746911].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.4666134].
+Time: 89.93436002731323 sec, gen loss = 1546.813232421875, disc loss = 69.03276824951172.
+Epoch:  91
+Time: 89.4903256893158 sec, gen loss = 1583.32861328125, disc loss = 69.1248550415039.
+Epoch:  92
+Time: 89.53298139572144 sec, gen loss = 1613.1490478515625, disc loss = 18.201826095581055.
+Epoch:  93
+Time: 89.29478859901428 sec, gen loss = 1514.498291015625, disc loss = 103.23149871826172.
+Epoch:  94
+Time: 89.92738032341003 sec, gen loss = 1574.1854248046875, disc loss = 140.11798095703125.
+Epoch:  95
+Time: 89.24773907661438 sec, gen loss = 1467.5284423828125, disc loss = 52.588623046875.
+Epoch:  96
+Time: 89.87369132041931 sec, gen loss = 1529.7421875, disc loss = 79.12181091308594.
+Epoch:  97
+Time: 89.54040718078613 sec, gen loss = 1552.69482421875, disc loss = 56.29106903076172.
+Epoch:  98
+Time: 89.3995201587677 sec, gen loss = 1554.4224853515625, disc loss = 34.324562072753906.
+Epoch:  99
+Time: 89.86363053321838 sec, gen loss = 1551.5567626953125, disc loss = 123.24565124511719.
+Epoch:  100
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1249322].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1641265].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0440966].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1158183].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1193409].
+Time: 90.14195656776428 sec, gen loss = 1570.9066162109375, disc loss = 22.128328323364258.
+Total training time: 8950.28 sec (02h 29m 10.28s)
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.61it/s]
+2522.9165883781084 0.4052747850337339 0.7540380235874768
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:10<00:00,  2.40it/s]
+751.8970972322954 0.17850103453918523 0.8176375683255358
