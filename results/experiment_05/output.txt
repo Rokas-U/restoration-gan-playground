@@ -1,0 +1,334 @@
+$ python3 gan_model_v1.4.py
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1776524352.597366   32082 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1776524353.230472   32082 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI AVX512_BF16 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1776524377.463587   32082 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+(489, 489, 3) (256, 256, 3)
+244 0 255 0
+Found 8164 files.
+Using 7348 files for training.
+I0000 00:00:1776524398.227145   32082 gpu_device.cc:2043] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 21764 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+Found 8164 files.
+Using 816 files for validation.
+Found 8164 files.
+Using 7348 files for training.
+Found 8164 files.
+Using 816 files for validation.
+/mnt/c/User/removed/projects/restoration-gan-playground/gan_model_v1.4.py:110: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+(32, 256, 256, 3) (32, 256, 256, 3)
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_v1.4.py:126: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+(32, 256, 256, 3) (32, 256, 256, 3)
+Model: "functional_15"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                  ┃ Output Shape              ┃         Param # ┃ Connected to               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ input_layer (InputLayer)      │ (None, 256, 256, 3)       │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential (Sequential)       │ (None, 128, 128, 64)      │           1,728 │ input_layer[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_1 (Sequential)     │ (None, 64, 64, 128)       │          74,240 │ sequential[0][0]           │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_2 (Sequential)     │ (None, 32, 32, 128)       │         147,968 │ sequential_1[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_3 (Sequential)     │ (None, 16, 16, 256)       │         295,936 │ sequential_2[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_4 (Sequential)     │ (None, 8, 8, 256)         │         590,848 │ sequential_3[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_5 (Sequential)     │ (None, 4, 4, 512)         │       1,181,696 │ sequential_4[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_6 (Sequential)     │ (None, 2, 2, 512)         │       2,361,344 │ sequential_5[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_7 (Sequential)     │ (None, 1, 1, 512)         │       2,361,344 │ sequential_6[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_8 (Sequential)     │ (None, 2, 2, 512)         │       2,361,344 │ sequential_7[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate (Concatenate)     │ (None, 2, 2, 1024)        │               0 │ sequential_8[0][0],        │
+│                               │                           │                 │ sequential_6[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_9 (Sequential)     │ (None, 4, 4, 512)         │       4,720,640 │ concatenate[0][0]          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_1 (Concatenate)   │ (None, 4, 4, 1024)        │               0 │ sequential_9[0][0],        │
+│                               │                           │                 │ sequential_5[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_10 (Sequential)    │ (None, 8, 8, 256)         │       2,360,320 │ concatenate_1[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_2 (Concatenate)   │ (None, 8, 8, 512)         │               0 │ sequential_10[0][0],       │
+│                               │                           │                 │ sequential_4[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_11 (Sequential)    │ (None, 16, 16, 256)       │       1,180,672 │ concatenate_2[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_3 (Concatenate)   │ (None, 16, 16, 512)       │               0 │ sequential_11[0][0],       │
+│                               │                           │                 │ sequential_3[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_12 (Sequential)    │ (None, 32, 32, 128)       │         590,336 │ concatenate_3[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_4 (Concatenate)   │ (None, 32, 32, 256)       │               0 │ sequential_12[0][0],       │
+│                               │                           │                 │ sequential_2[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_13 (Sequential)    │ (None, 64, 64, 128)       │         295,424 │ concatenate_4[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_5 (Concatenate)   │ (None, 64, 64, 256)       │               0 │ sequential_13[0][0],       │
+│                               │                           │                 │ sequential_1[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_14 (Sequential)    │ (None, 128, 128, 64)      │         147,712 │ concatenate_5[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_6 (Concatenate)   │ (None, 128, 128, 128)     │               0 │ sequential_14[0][0],       │
+│                               │                           │                 │ sequential[0][0]           │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv2d_transpose_7            │ (None, 256, 256, 3)       │           9,603 │ concatenate_6[0][0]        │
+│ (Conv2DTranspose)             │                           │                 │                            │
+└───────────────────────────────┴───────────────────────────┴─────────────────┴────────────────────────────┘
+ Total params: 18,681,155 (71.26 MB)
+ Trainable params: 18,672,835 (71.23 MB)
+ Non-trainable params: 8,320 (32.50 KB)
+Model: "functional_19"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                  ┃ Output Shape              ┃         Param # ┃ Connected to               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ input_image (InputLayer)      │ (None, 256, 256, 3)       │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ target_image (InputLayer)     │ (None, 256, 256, 3)       │               0 │ -                          │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ concatenate_7 (Concatenate)   │ (None, 256, 256, 6)       │               0 │ input_image[0][0],         │
+│                               │                           │                 │ target_image[0][0]         │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_15 (Sequential)    │ (None, 128, 128, 64)      │           3,456 │ concatenate_7[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_16 (Sequential)    │ (None, 64, 64, 128)       │          74,240 │ sequential_15[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ sequential_17 (Sequential)    │ (None, 32, 32, 256)       │         295,936 │ sequential_16[0][0]        │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ zero_padding2d                │ (None, 34, 34, 256)       │               0 │ sequential_17[0][0]        │
+│ (ZeroPadding2D)               │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv2d_11 (Conv2D)            │ (None, 32, 32, 512)       │       1,179,648 │ zero_padding2d[0][0]       │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ batch_normalization_16        │ (None, 32, 32, 512)       │           2,048 │ conv2d_11[0][0]            │
+│ (BatchNormalization)          │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ leaky_re_lu_11 (LeakyReLU)    │ (None, 32, 32, 512)       │               0 │ batch_normalization_16[0]… │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ zero_padding2d_1              │ (None, 34, 34, 512)       │               0 │ leaky_re_lu_11[0][0]       │
+│ (ZeroPadding2D)               │                           │                 │                            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ conv2d_12 (Conv2D)            │ (None, 32, 32, 1)         │           4,609 │ zero_padding2d_1[0][0]     │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ flatten (Flatten)             │ (None, 1024)              │               0 │ conv2d_12[0][0]            │
+├───────────────────────────────┼───────────────────────────┼─────────────────┼────────────────────────────┤
+│ dense (Dense)                 │ (None, 1)                 │           1,025 │ flatten[0][0]              │
+└───────────────────────────────┴───────────────────────────┴─────────────────┴────────────────────────────┘
+ Total params: 1,560,962 (5.95 MB)
+ Trainable params: 1,559,170 (5.95 MB)
+ Non-trainable params: 1,792 (7.00 KB)
+Epoch:  1
+I0000 00:00:1776524403.641853   32082 cuda_dnn.cc:461] Loaded cuDNN version 92100
+Time: 100.98616242408752 sec, gen loss = 2220.784912109375, disc loss = 289.2380065917969.
+Epoch:  2
+Time: 89.34369850158691 sec, gen loss = 1418.084228515625, disc loss = 302.0677185058594.
+Epoch:  3
+Time: 89.38741612434387 sec, gen loss = 1299.94287109375, disc loss = 296.57684326171875.
+Epoch:  4
+Time: 89.52424049377441 sec, gen loss = 1205.427001953125, disc loss = 292.927001953125.
+Epoch:  5
+Time: 89.65679979324341 sec, gen loss = 1121.508056640625, disc loss = 299.9635314941406.
+Epoch:  6
+Time: 89.8284239768982 sec, gen loss = 1061.4454345703125, disc loss = 297.15411376953125.
+Epoch:  7
+Time: 89.45333623886108 sec, gen loss = 1011.49365234375, disc loss = 291.1572570800781.
+Epoch:  8
+Time: 91.31366348266602 sec, gen loss = 1057.4127197265625, disc loss = 266.79791259765625.
+Epoch:  9
+Time: 92.13975882530212 sec, gen loss = 1098.862548828125, disc loss = 227.5355224609375.
+Epoch:  10
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_v1.4.py:318: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+Time: 94.1842110157013 sec, gen loss = 1156.9515380859375, disc loss = 212.97389221191406.
+Epoch:  11
+Time: 91.40189361572266 sec, gen loss = 1246.3206787109375, disc loss = 184.9617462158203.
+Epoch:  12
+Time: 91.5758204460144 sec, gen loss = 1328.4449462890625, disc loss = 159.03636169433594.
+Epoch:  13
+Time: 91.49155020713806 sec, gen loss = 1341.571044921875, disc loss = 155.31423950195312.
+Epoch:  14
+Time: 90.1268904209137 sec, gen loss = 1327.0426025390625, disc loss = 157.68414306640625.
+Epoch:  15
+Time: 85.46500205993652 sec, gen loss = 1355.1591796875, disc loss = 149.36599731445312.
+Epoch:  16
+Time: 85.62810945510864 sec, gen loss = 1646.0999755859375, disc loss = 92.51656341552734.
+Epoch:  17
+Time: 85.3369882106781 sec, gen loss = 1396.3409423828125, disc loss = 148.20468139648438.
+Epoch:  18
+Time: 85.41636371612549 sec, gen loss = 1429.697509765625, disc loss = 140.9219207763672.
+Epoch:  19
+Time: 85.31632280349731 sec, gen loss = 1512.252685546875, disc loss = 111.79077911376953.
+Epoch:  20
+Time: 85.8502209186554 sec, gen loss = 1633.4779052734375, disc loss = 123.02539825439453.
+Epoch:  21
+Time: 85.10951018333435 sec, gen loss = 1448.880615234375, disc loss = 124.46405029296875.
+Epoch:  22
+Time: 85.09555697441101 sec, gen loss = 1460.068115234375, disc loss = 139.31484985351562.
+Epoch:  23
+Time: 85.22759413719177 sec, gen loss = 1684.1461181640625, disc loss = 110.9990463256836.
+Epoch:  24
+Time: 85.46433210372925 sec, gen loss = 1454.85400390625, disc loss = 129.5926971435547.
+Epoch:  25
+Time: 85.20778512954712 sec, gen loss = 1569.1771240234375, disc loss = 104.86212158203125.
+Epoch:  26
+Time: 85.40145707130432 sec, gen loss = 1568.65478515625, disc loss = 105.30071258544922.
+Epoch:  27
+Time: 85.2121901512146 sec, gen loss = 1639.999755859375, disc loss = 100.6747055053711.
+Epoch:  28
+Time: 85.52009773254395 sec, gen loss = 1589.59912109375, disc loss = 105.8298110961914.
+Epoch:  29
+Time: 85.53050494194031 sec, gen loss = 1708.3709716796875, disc loss = 95.00718688964844.
+Epoch:  30
+Time: 85.71884441375732 sec, gen loss = 1572.6617431640625, disc loss = 104.37574005126953.
+Epoch:  31
+Time: 85.48498225212097 sec, gen loss = 1768.5721435546875, disc loss = 75.62454986572266.
+Epoch:  32
+Time: 85.54063487052917 sec, gen loss = 1372.899658203125, disc loss = 172.78201293945312.
+Epoch:  33
+Time: 85.54502844810486 sec, gen loss = 1543.023193359375, disc loss = 101.59454345703125.
+Epoch:  34
+Time: 85.51597952842712 sec, gen loss = 1819.7232666015625, disc loss = 63.573997497558594.
+Epoch:  35
+Time: 87.37422847747803 sec, gen loss = 1636.3494873046875, disc loss = 98.86087036132812.
+Epoch:  36
+Time: 86.11122012138367 sec, gen loss = 1669.2908935546875, disc loss = 90.12918853759766.
+Epoch:  37
+Time: 86.22891402244568 sec, gen loss = 1525.537841796875, disc loss = 96.53092956542969.
+Epoch:  38
+Time: 86.59674215316772 sec, gen loss = 1718.577880859375, disc loss = 98.66716003417969.
+Epoch:  39
+Time: 86.8415961265564 sec, gen loss = 1581.2667236328125, disc loss = 103.2845458984375.
+Epoch:  40
+Time: 86.42236351966858 sec, gen loss = 1750.5172119140625, disc loss = 70.29447174072266.
+Epoch:  41
+Time: 85.84083914756775 sec, gen loss = 1743.421875, disc loss = 78.17400360107422.
+Epoch:  42
+Time: 86.51650214195251 sec, gen loss = 1844.6199951171875, disc loss = 78.17144775390625.
+Epoch:  43
+Time: 86.35427761077881 sec, gen loss = 1832.5521240234375, disc loss = 80.43421936035156.
+Epoch:  44
+Time: 86.27707433700562 sec, gen loss = 1683.71533203125, disc loss = 87.02070617675781.
+Epoch:  45
+Time: 86.20689582824707 sec, gen loss = 1637.6915283203125, disc loss = 108.5345687866211.
+Epoch:  46
+Time: 86.6780731678009 sec, gen loss = 1843.4207763671875, disc loss = 92.62896728515625.
+Epoch:  47
+Time: 86.29912686347961 sec, gen loss = 1556.071044921875, disc loss = 99.9961166381836.
+Epoch:  48
+Time: 86.34088683128357 sec, gen loss = 1693.479248046875, disc loss = 96.95356750488281.
+Epoch:  49
+Time: 85.87424826622009 sec, gen loss = 1612.0562744140625, disc loss = 90.23129272460938.
+Epoch:  50
+Time: 85.1145510673523 sec, gen loss = 1945.65283203125, disc loss = 55.531734466552734.
+Epoch:  51
+Time: 84.60407280921936 sec, gen loss = 1972.5894775390625, disc loss = 57.942718505859375.
+Epoch:  52
+Time: 84.57190108299255 sec, gen loss = 1854.4066162109375, disc loss = 67.99774169921875.
+Epoch:  53
+Time: 84.59312129020691 sec, gen loss = 1587.78076171875, disc loss = 134.71035766601562.
+Epoch:  54
+Time: 84.71401906013489 sec, gen loss = 1635.5836181640625, disc loss = 81.16224670410156.
+Epoch:  55
+Time: 86.34931921958923 sec, gen loss = 1886.3065185546875, disc loss = 55.388771057128906.
+Epoch:  56
+Time: 86.17204356193542 sec, gen loss = 1991.6334228515625, disc loss = 98.55078887939453.
+Epoch:  57
+Time: 86.33602643013 sec, gen loss = 1630.9345703125, disc loss = 100.84805297851562.
+Epoch:  58
+Time: 86.00303077697754 sec, gen loss = 1534.9248046875, disc loss = 109.38934326171875.
+Epoch:  59
+Time: 86.28554391860962 sec, gen loss = 1809.4794921875, disc loss = 70.28770446777344.
+Epoch:  60
+Time: 86.4636161327362 sec, gen loss = 1783.3072509765625, disc loss = 64.14381408691406.
+Epoch:  61
+Time: 86.43250393867493 sec, gen loss = 1950.918212890625, disc loss = 61.059783935546875.
+Epoch:  62
+Time: 86.22160720825195 sec, gen loss = 2117.873046875, disc loss = 54.130157470703125.
+Epoch:  63
+Time: 86.62308979034424 sec, gen loss = 1913.0928955078125, disc loss = 68.22523498535156.
+Epoch:  64
+Time: 87.07725763320923 sec, gen loss = 1729.1297607421875, disc loss = 94.84588623046875.
+Epoch:  65
+Time: 86.9341139793396 sec, gen loss = 2029.203857421875, disc loss = 57.21536636352539.
+Epoch:  66
+Time: 87.21575093269348 sec, gen loss = 1808.2066650390625, disc loss = 96.74996948242188.
+Epoch:  67
+Time: 87.05892825126648 sec, gen loss = 1530.105224609375, disc loss = 92.30738830566406.
+Epoch:  68
+Time: 87.0809314250946 sec, gen loss = 2022.524658203125, disc loss = 52.6435432434082.
+Epoch:  69
+Time: 87.06752371788025 sec, gen loss = 2053.659912109375, disc loss = 64.59840393066406.
+Epoch:  70
+Time: 87.97129535675049 sec, gen loss = 1655.3148193359375, disc loss = 89.95052337646484.
+Epoch:  71
+Time: 86.6796817779541 sec, gen loss = 2305.31396484375, disc loss = 39.823341369628906.
+Epoch:  72
+Time: 86.74025750160217 sec, gen loss = 1631.8463134765625, disc loss = 92.99844360351562.
+Epoch:  73
+Time: 86.7872543334961 sec, gen loss = 1594.2835693359375, disc loss = 101.36890411376953.
+Epoch:  74
+Time: 86.99714016914368 sec, gen loss = 1804.9483642578125, disc loss = 62.11507797241211.
+Epoch:  75
+Time: 87.13721370697021 sec, gen loss = 2053.084228515625, disc loss = 42.551597595214844.
+Epoch:  76
+Time: 86.88503408432007 sec, gen loss = 1772.3333740234375, disc loss = 94.13113403320312.
+Epoch:  77
+Time: 85.28827285766602 sec, gen loss = 2008.7916259765625, disc loss = 64.25171661376953.
+Epoch:  78
+Time: 84.27857112884521 sec, gen loss = 1793.091552734375, disc loss = 76.68598175048828.
+Epoch:  79
+Time: 84.21391153335571 sec, gen loss = 1618.7794189453125, disc loss = 97.79094696044922.
+Epoch:  80
+Time: 85.15100502967834 sec, gen loss = 1785.1739501953125, disc loss = 89.19348907470703.
+Epoch:  81
+Time: 84.58341693878174 sec, gen loss = 1788.292724609375, disc loss = 92.83031463623047.
+Epoch:  82
+Time: 84.61767053604126 sec, gen loss = 1743.553466796875, disc loss = 68.14325714111328.
+Epoch:  83
+Time: 84.76258611679077 sec, gen loss = 2507.134765625, disc loss = 19.91718101501465.
+Epoch:  84
+Time: 84.63524150848389 sec, gen loss = 1642.35986328125, disc loss = 105.33467102050781.
+Epoch:  85
+Time: 84.6885085105896 sec, gen loss = 2520.4013671875, disc loss = 11.882279396057129.
+Epoch:  86
+Time: 84.73414015769958 sec, gen loss = 1728.853271484375, disc loss = 110.3207778930664.
+Epoch:  87
+Time: 84.61032271385193 sec, gen loss = 2253.881591796875, disc loss = 27.707197189331055.
+Epoch:  88
+Time: 85.02720046043396 sec, gen loss = 1588.8310546875, disc loss = 115.29861450195312.
+Epoch:  89
+Time: 84.9670205116272 sec, gen loss = 2049.4892578125, disc loss = 42.25324630737305.
+Epoch:  90
+Time: 85.43060898780823 sec, gen loss = 1763.22509765625, disc loss = 78.48516845703125.
+Epoch:  91
+Time: 84.49845099449158 sec, gen loss = 2069.42431640625, disc loss = 49.68321228027344.
+Epoch:  92
+Time: 84.76553845405579 sec, gen loss = 2350.8740234375, disc loss = 47.45717239379883.
+Epoch:  93
+Time: 84.62206149101257 sec, gen loss = 1622.7130126953125, disc loss = 115.6408462524414.
+Epoch:  94
+Time: 85.19900488853455 sec, gen loss = 1970.7764892578125, disc loss = 51.305397033691406.
+Epoch:  95
+Time: 87.9456558227539 sec, gen loss = 2042.0301513671875, disc loss = 55.154781341552734.
+Epoch:  96
+Time: 85.8733868598938 sec, gen loss = 1839.01318359375, disc loss = 105.73645782470703.
+Epoch:  97
+Time: 86.30535387992859 sec, gen loss = 1711.286376953125, disc loss = 79.23050689697266.
+Epoch:  98
+Time: 86.08895015716553 sec, gen loss = 2271.22265625, disc loss = 21.51814842224121.
+Epoch:  99
+Time: 85.89568400382996 sec, gen loss = 1645.9471435546875, disc loss = 126.9328384399414.
+Epoch:  100
+Time: 86.62947964668274 sec, gen loss = 2238.94140625, disc loss = 39.84587478637695.
+Total training time: 8661.94 sec (02h 24m 21.94s)
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:09<00:00,  2.72it/s]
+2522.9165883781084 0.4052747850337339 0.7540380235874768
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████| 26/26 [00:11<00:00,  2.28it/s]
+203.7553090301216 0.10546181414329606 0.8023123778716514
