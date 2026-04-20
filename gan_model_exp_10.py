@@ -255,7 +255,7 @@ def generator_loss(disc_generated_output, gen_output, target):
 
     total_gen_loss = gan_loss
 
-    return total_gen_loss, gan_loss,
+    return total_gen_loss, gan_loss
 
 def discriminator_loss(disc_real_output, disc_generated_output):
     real_loss = loss_object(tf.ones_like(disc_real_output), disc_real_output)
@@ -277,7 +277,7 @@ def train_step(input_image, target, epoch):
         disc_real_output = discriminator([input_image, target], training=True)
         disc_generated_output = discriminator([input_image, gen_output], training=True)
 
-        gen_total_loss, gen_gan_loss, gen_l1_loss = generator_loss(disc_generated_output, gen_output, target)
+        gen_total_loss, gen_gan_loss = generator_loss(disc_generated_output, gen_output, target)
         disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
 
     generator_gradients = gen_tape.gradient(gen_total_loss,generator.trainable_variables)
