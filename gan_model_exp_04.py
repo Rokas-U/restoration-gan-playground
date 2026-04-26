@@ -251,6 +251,7 @@ generator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
 discriminator_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
 
 LAMBDA = 100
+PERCEPTUAL_WEIGHT = 5
 
 vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet')
 vgg.trainable = False
@@ -258,6 +259,7 @@ feat_extractor = tf.keras.Model(
     inputs=vgg.input,
     outputs=vgg.get_layer('block3_conv3').output
 )
+feat_extractor.trainable = False
 def perceptual_loss(gen_output, target):
     gen = tf.keras.applications.vgg19.preprocess_input((gen_output + 1.0) * 127.5)
     tar = tf.keras.applications.vgg19.preprocess_input((target + 1.0) * 127.5)
@@ -270,10 +272,9 @@ def generator_loss(disc_generated_output, gen_output, target):
 
     p_loss = perceptual_loss(gen_output, target)
 
-    PERCEPTUAL_WEIGHT = 5
     total_gen_loss = gan_loss + LAMBDA * l1_loss + PERCEPTUAL_WEIGHT * p_loss
 
-    return total_gen_loss, gan_loss, l1_loss
+    return total_gen_loss, gan_loss, l1_loss, p_loss
 
 def discriminator_loss(disc_real_output, disc_generated_output):
     real_loss = loss_object(tf.ones_like(disc_real_output), disc_real_output)
@@ -295,7 +296,7 @@ def train_step(input_image, target, epoch):
         disc_real_output = discriminator([input_image, target], training=True)
         disc_generated_output = discriminator([input_image, gen_output], training=True)
 
-        gen_total_loss, gen_gan_loss, gen_l1_loss = generator_loss(disc_generated_output, gen_output, target)
+        gen_total_loss, gen_gan_loss, gen_l1_loss, gen_perc_loss = generator_loss(disc_generated_output, gen_output, target)
         disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
 
     generator_gradients = gen_tape.gradient(gen_total_loss,generator.trainable_variables)
@@ -303,7 +304,7 @@ def train_step(input_image, target, epoch):
 
     generator_optimizer.apply_gradients(zip(generator_gradients,generator.trainable_variables))
     discriminator_optimizer.apply_gradients(zip(discriminator_gradients,discriminator.trainable_variables))
-    return gen_total_loss, disc_loss
+    return gen_total_loss, disc_loss, gen_gan_loss, gen_l1_loss, gen_perc_loss
 
 # %% [markdown] {"jupyter":{"outputs_hidden":false}}
 # A set of 5 images are taken from the test subset and predictions are made on those 5 images which is viewed after every 10 epochs.
@@ -344,14 +345,34 @@ def fit(train_ds, epochs):
         print("Epoch: ", epoch)
         generator_loss = 0
         discriminator_loss = 0
+        gan_loss_accum = 0
+        l1_loss_accum = 0
+        perc_loss_accum = 0
+        n_batches = 0
+
         for n, (target, input_image) in train_ds.enumerate():
-            gen_total_loss, disc_loss = train_step(input_image, target, epoch)
+            gen_total_loss, disc_loss, gan_l, l1_l, perc_l = train_step(input_image, target, epoch)
             generator_loss += gen_total_loss
             discriminator_loss += disc_loss
+            gan_loss_accum += gan_l
+            l1_loss_accum += l1_l
+            perc_loss_accum += perc_l
+            n_batches += 1
         if epoch%10 == 0:
             generate_samples(epoch)
 
         print ('Time: {} sec, gen loss = {}, disc loss = {}.'.format(time.time()-start, generator_loss, discriminator_loss))
+        # Report per-batch averages of each component, both raw and weighted.
+        # The weighted values are what the optimizer actually sees; compare these.
+        avg_gan = gan_loss_accum / n_batches
+        avg_l1 = l1_loss_accum / n_batches
+        avg_perc = perc_loss_accum / n_batches
+        print('Time: {:.1f}s | gen={:.4f} disc={:.4f}'.format(
+            time.time()-start, generator_loss/n_batches, discriminator_loss/n_batches))
+        print('  Raw:      gan={:.4f}  l1={:.4f}  perc={:.4f}'.format(
+            avg_gan, avg_l1, avg_perc))
+        print('  Weighted: gan={:.4f}  l1={:.4f}  perc={:.4f}  (L1 x{}, PERC x{})'.format(
+            avg_gan, LAMBDA * avg_l1, PERCEPTUAL_WEIGHT * avg_perc, LAMBDA, PERCEPTUAL_WEIGHT))
 
     total_time = time.time() - total_start
     hours, rem = divmod(total_time, 3600)
