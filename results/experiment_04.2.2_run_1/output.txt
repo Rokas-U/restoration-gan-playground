@@ -1,0 +1,675 @@
+$ python3 gan_model_exp_04.2.2.py
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1777166783.439539   26427 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1777166784.141762   26427 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI AVX512_BF16 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1777166798.240572   26427 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+(489, 489, 3) (256, 256, 3)
+244 0 255 0
+Found 8164 files.
+Using 7348 files for training.
+I0000 00:00:1777166809.144428   26427 gpu_device.cc:2043] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 21764 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+Found 8164 files.
+Using 816 files for validation.
+Found 8164 files.
+Using 7348 files for training.
+Found 8164 files.
+Using 816 files for validation.
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_exp_04.2.2.py:110: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+(32, 256, 256, 3) (32, 256, 256, 3)
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_exp_04.2.2.py:126: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+(32, 256, 256, 3) (32, 256, 256, 3)
+Model: "functional_15"
+
+ Layer (type)                   Output Shape                       Param #  Connected to               
+
+ input_layer (InputLayer)       (None, 256, 256, 3)                      0  -                          
+
+ sequential (Sequential)        (None, 128, 128, 64)                 1,728  input_layer[0][0]          
+
+ sequential_1 (Sequential)      (None, 64, 64, 128)                 74,240  sequential[0][0]           
+
+ sequential_2 (Sequential)      (None, 32, 32, 128)                147,968  sequential_1[0][0]         
+
+ sequential_3 (Sequential)      (None, 16, 16, 256)                295,936  sequential_2[0][0]         
+
+ sequential_4 (Sequential)      (None, 8, 8, 256)                  590,848  sequential_3[0][0]         
+
+ sequential_5 (Sequential)      (None, 4, 4, 512)                1,181,696  sequential_4[0][0]         
+
+ sequential_6 (Sequential)      (None, 2, 2, 512)                2,361,344  sequential_5[0][0]         
+
+ sequential_7 (Sequential)      (None, 1, 1, 512)                2,361,344  sequential_6[0][0]         
+
+ sequential_8 (Sequential)      (None, 2, 2, 512)                2,361,344  sequential_7[0][0]         
+
+ concatenate (Concatenate)      (None, 2, 2, 1024)                       0  sequential_8[0][0],        
+                                                                            sequential_6[0][0]         
+
+ sequential_9 (Sequential)      (None, 4, 4, 512)                4,720,640  concatenate[0][0]          
+
+ concatenate_1 (Concatenate)    (None, 4, 4, 1024)                       0  sequential_9[0][0],        
+                                                                            sequential_5[0][0]         
+
+ sequential_10 (Sequential)     (None, 8, 8, 256)                2,360,320  concatenate_1[0][0]        
+
+ concatenate_2 (Concatenate)    (None, 8, 8, 512)                        0  sequential_10[0][0],       
+                                                                            sequential_4[0][0]         
+
+ sequential_11 (Sequential)     (None, 16, 16, 256)              1,180,672  concatenate_2[0][0]        
+
+ concatenate_3 (Concatenate)    (None, 16, 16, 512)                      0  sequential_11[0][0],       
+                                                                            sequential_3[0][0]         
+
+ sequential_12 (Sequential)     (None, 32, 32, 128)                590,336  concatenate_3[0][0]        
+
+ concatenate_4 (Concatenate)    (None, 32, 32, 256)                      0  sequential_12[0][0],       
+                                                                            sequential_2[0][0]         
+
+ sequential_13 (Sequential)     (None, 64, 64, 128)                295,424  concatenate_4[0][0]        
+
+ concatenate_5 (Concatenate)    (None, 64, 64, 256)                      0  sequential_13[0][0],       
+                                                                            sequential_1[0][0]         
+
+ sequential_14 (Sequential)     (None, 128, 128, 64)               147,712  concatenate_5[0][0]        
+
+ concatenate_6 (Concatenate)    (None, 128, 128, 128)                    0  sequential_14[0][0],       
+                                                                            sequential[0][0]           
+
+ conv2d_transpose_7             (None, 256, 256, 3)                  9,603  concatenate_6[0][0]        
+ (Conv2DTranspose)                                                                                     
+
+ Total params: 18,681,155 (71.26 MB)
+ Trainable params: 18,672,835 (71.23 MB)
+ Non-trainable params: 8,320 (32.50 KB)
+Model: "functional_19"
+
+ Layer (type)                   Output Shape                       Param #  Connected to               
+
+ input_image (InputLayer)       (None, 256, 256, 3)                      0  -                          
+
+ target_image (InputLayer)      (None, 256, 256, 3)                      0  -                          
+
+ concatenate_7 (Concatenate)    (None, 256, 256, 6)                      0  input_image[0][0],         
+                                                                            target_image[0][0]         
+
+ sequential_15 (Sequential)     (None, 128, 128, 64)                 3,456  concatenate_7[0][0]        
+
+ sequential_16 (Sequential)     (None, 64, 64, 128)                 74,240  sequential_15[0][0]        
+
+ sequential_17 (Sequential)     (None, 32, 32, 256)                295,936  sequential_16[0][0]        
+
+ zero_padding2d                 (None, 34, 34, 256)                      0  sequential_17[0][0]        
+ (ZeroPadding2D)                                                                                       
+
+ conv2d_11 (Conv2D)             (None, 32, 32, 512)              1,179,648  zero_padding2d[0][0]       
+
+ batch_normalization_16         (None, 32, 32, 512)                  2,048  conv2d_11[0][0]            
+ (BatchNormalization)                                                                                  
+
+ leaky_re_lu_11 (LeakyReLU)     (None, 32, 32, 512)                      0  batch_normalization_16[0]… 
+
+ zero_padding2d_1               (None, 34, 34, 512)                      0  leaky_re_lu_11[0][0]       
+ (ZeroPadding2D)                                                                                       
+
+ conv2d_12 (Conv2D)             (None, 32, 32, 1)                    4,609  zero_padding2d_1[0][0]     
+
+ flatten (Flatten)              (None, 1024)                             0  conv2d_12[0][0]            
+
+ dense (Dense)                  (None, 1)                            1,025  flatten[0][0]              
+
+ Total params: 1,560,962 (5.95 MB)
+ Trainable params: 1,559,170 (5.95 MB)
+ Non-trainable params: 1,792 (7.00 KB)
+Epoch:  1
+I0000 00:00:1777166813.927844   26427 cuda_dnn.cc:461] Loaded cuDNN version 92100
+Time: 166.7288749217987 sec, gen loss = 28513.517578125, disc loss = 115.3149642944336.
+Time: 166.7s | gen=123.9718 disc=0.5014
+  Raw:      gan=3.9011  l1=0.1293  perc=214.2797
+  Weighted: gan=3.9011  l1=12.9309  perc=107.1399  (L1 x100, PERC x0.5)
+Epoch:  2
+Time: 148.94985938072205 sec, gen loss = 20397.259765625, disc loss = 165.98193359375.
+Time: 149.0s | gen=88.6837 disc=0.7217
+  Raw:      gan=2.5707  l1=0.0602  perc=160.1900
+  Weighted: gan=2.5707  l1=6.0180  perc=80.0950  (L1 x100, PERC x0.5)
+Epoch:  3
+Time: 147.5106394290924 sec, gen loss = 18090.03125, disc loss = 151.97264099121094.
+Time: 147.5s | gen=78.6523 disc=0.6608
+  Raw:      gan=2.6188  l1=0.0509  perc=141.8906
+  Weighted: gan=2.6188  l1=5.0882  perc=70.9453  (L1 x100, PERC x0.5)
+Epoch:  4
+Time: 149.94449305534363 sec, gen loss = 16654.125, disc loss = 163.25448608398438.
+Time: 149.9s | gen=72.4092 disc=0.7098
+  Raw:      gan=2.4705  l1=0.0448  perc=130.9225
+  Weighted: gan=2.4705  l1=4.4775  perc=65.4612  (L1 x100, PERC x0.5)
+Epoch:  5
+Time: 147.8811662197113 sec, gen loss = 15817.701171875, disc loss = 155.488037109375.
+Time: 147.9s | gen=68.7726 disc=0.6760
+  Raw:      gan=2.4022  l1=0.0416  perc=124.4186
+  Weighted: gan=2.4022  l1=4.1611  perc=62.2093  (L1 x100, PERC x0.5)
+Epoch:  6
+Time: 149.42902135849 sec, gen loss = 15117.97265625, disc loss = 142.41677856445312.
+Time: 149.4s | gen=65.7303 disc=0.6192
+  Raw:      gan=2.6193  l1=0.0391  perc=118.4051
+  Weighted: gan=2.6193  l1=3.9085  perc=59.2025  (L1 x100, PERC x0.5)
+Epoch:  7
+Time: 147.9703986644745 sec, gen loss = 14356.234375, disc loss = 153.0802001953125.
+Time: 148.0s | gen=62.4184 disc=0.6656
+  Raw:      gan=2.7195  l1=0.0373  perc=111.9462
+  Weighted: gan=2.7195  l1=3.7259  perc=55.9731  (L1 x100, PERC x0.5)
+Epoch:  8
+Time: 149.7391197681427 sec, gen loss = 13882.8349609375, disc loss = 153.36880493164062.
+Time: 149.7s | gen=60.3602 disc=0.6668
+  Raw:      gan=2.6281  l1=0.0358  perc=108.3059
+  Weighted: gan=2.6281  l1=3.5791  perc=54.1530  (L1 x100, PERC x0.5)
+Epoch:  9
+Time: 146.46444535255432 sec, gen loss = 13269.66796875, disc loss = 157.6149444580078.
+Time: 146.5s | gen=57.6942 disc=0.6853
+  Raw:      gan=2.4869  l1=0.0339  perc=103.6301
+  Weighted: gan=2.4869  l1=3.3923  perc=51.8150  (L1 x100, PERC x0.5)
+Epoch:  10
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1377176].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.043137].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0734705].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1411635].
+/mnt/c/Users/removed/projects/restoration-gan-playground/gan_model_exp_04.2.2.py:333: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+Time: 148.46520447731018 sec, gen loss = 12785.7763671875, disc loss = 159.8533935546875.
+Time: 148.5s | gen=55.5903 disc=0.6950
+  Raw:      gan=2.3743  l1=0.0326  perc=99.9169
+  Weighted: gan=2.3743  l1=3.2576  perc=49.9585  (L1 x100, PERC x0.5)
+Epoch:  11
+Time: 146.406973361969 sec, gen loss = 12387.599609375, disc loss = 165.17779541015625.
+Time: 146.4s | gen=53.8591 disc=0.7182
+  Raw:      gan=2.4691  l1=0.0314  perc=96.5022
+  Weighted: gan=2.4691  l1=3.1389  perc=48.2511  (L1 x100, PERC x0.5)
+Epoch:  12
+Time: 147.77820420265198 sec, gen loss = 12134.4365234375, disc loss = 152.22195434570312.
+Time: 147.8s | gen=52.7584 disc=0.6618
+  Raw:      gan=2.4244  l1=0.0310  perc=94.4621
+  Weighted: gan=2.4244  l1=3.1030  perc=47.2311  (L1 x100, PERC x0.5)
+Epoch:  13
+Time: 146.8440818786621 sec, gen loss = 11809.8359375, disc loss = 167.01034545898438.
+Time: 146.8s | gen=51.3471 disc=0.7261
+  Raw:      gan=2.3775  l1=0.0300  perc=91.9312
+  Weighted: gan=2.3775  l1=3.0040  perc=45.9656  (L1 x100, PERC x0.5)
+Epoch:  14
+Time: 146.56610870361328 sec, gen loss = 11556.775390625, disc loss = 153.883544921875.
+Time: 146.6s | gen=50.2468 disc=0.6691
+  Raw:      gan=2.4675  l1=0.0287  perc=89.8272
+  Weighted: gan=2.4675  l1=2.8657  perc=44.9136  (L1 x100, PERC x0.5)
+Epoch:  15
+Time: 148.17306637763977 sec, gen loss = 11563.5771484375, disc loss = 157.46556091308594.
+Time: 148.2s | gen=50.2764 disc=0.6846
+  Raw:      gan=2.6636  l1=0.0282  perc=89.5902
+  Weighted: gan=2.6636  l1=2.8177  perc=44.7951  (L1 x100, PERC x0.5)
+Epoch:  16
+Time: 146.79845595359802 sec, gen loss = 11152.6796875, disc loss = 153.84779357910156.
+Time: 146.8s | gen=48.4899 disc=0.6689
+  Raw:      gan=2.4142  l1=0.0270  perc=86.7524
+  Weighted: gan=2.4142  l1=2.6995  perc=43.3762  (L1 x100, PERC x0.5)
+Epoch:  17
+Time: 148.19033002853394 sec, gen loss = 11140.2255859375, disc loss = 145.49974060058594.
+Time: 148.2s | gen=48.4358 disc=0.6326
+  Raw:      gan=2.5952  l1=0.0264  perc=86.4031
+  Weighted: gan=2.5952  l1=2.6390  perc=43.2015  (L1 x100, PERC x0.5)
+Epoch:  18
+Time: 146.7227544784546 sec, gen loss = 10923.54296875, disc loss = 163.21971130371094.
+Time: 146.7s | gen=47.4937 disc=0.7097
+  Raw:      gan=2.6872  l1=0.0256  perc=84.4995
+  Weighted: gan=2.6872  l1=2.5567  perc=42.2497  (L1 x100, PERC x0.5)
+Epoch:  19
+Time: 148.09798407554626 sec, gen loss = 11038.49609375, disc loss = 136.998046875.
+Time: 148.1s | gen=47.9935 disc=0.5956
+  Raw:      gan=2.7390  l1=0.0256  perc=85.3835
+  Weighted: gan=2.7390  l1=2.5627  perc=42.6917  (L1 x100, PERC x0.5)
+Epoch:  20
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0800942].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.030847].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.063568].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.103556].
+Time: 147.240136384964 sec, gen loss = 10710.20703125, disc loss = 130.81446838378906.
+Time: 147.2s | gen=46.5661 disc=0.5688
+  Raw:      gan=2.7346  l1=0.0244  perc=82.7829
+  Weighted: gan=2.7346  l1=2.4401  perc=41.3914  (L1 x100, PERC x0.5)
+Epoch:  21
+Time: 148.18891763687134 sec, gen loss = 10437.30078125, disc loss = 136.29818725585938.
+Time: 148.2s | gen=45.3796 disc=0.5926
+  Raw:      gan=2.7205  l1=0.0238  perc=80.5664
+  Weighted: gan=2.7205  l1=2.3759  perc=40.2832  (L1 x100, PERC x0.5)
+Epoch:  22
+Time: 146.72598528862 sec, gen loss = 10391.0673828125, disc loss = 145.4787139892578.
+Time: 146.7s | gen=45.1786 disc=0.6325
+  Raw:      gan=2.7500  l1=0.0235  perc=80.1546
+  Weighted: gan=2.7500  l1=2.3513  perc=40.0773  (L1 x100, PERC x0.5)
+Epoch:  23
+Time: 148.34043049812317 sec, gen loss = 11083.56640625, disc loss = 118.03881072998047.
+Time: 148.3s | gen=48.1894 disc=0.5132
+  Raw:      gan=3.0437  l1=0.0253  perc=85.2339
+  Weighted: gan=3.0437  l1=2.5287  perc=42.6170  (L1 x100, PERC x0.5)
+Epoch:  24
+Time: 146.94653391838074 sec, gen loss = 10362.5341796875, disc loss = 128.03411865234375.
+Time: 146.9s | gen=45.0545 disc=0.5567
+  Raw:      gan=2.9152  l1=0.0231  perc=79.6571
+  Weighted: gan=2.9152  l1=2.3107  perc=39.8286  (L1 x100, PERC x0.5)
+Epoch:  25
+Time: 147.20942330360413 sec, gen loss = 10046.4912109375, disc loss = 147.1668701171875.
+Time: 147.2s | gen=43.6804 disc=0.6399
+  Raw:      gan=2.8536  l1=0.0226  perc=77.1401
+  Weighted: gan=2.8536  l1=2.2567  perc=38.5700  (L1 x100, PERC x0.5)
+Epoch:  26
+Time: 148.11481356620789 sec, gen loss = 10237.5869140625, disc loss = 128.16566467285156.
+Time: 148.1s | gen=44.5112 disc=0.5572
+  Raw:      gan=2.8538  l1=0.0227  perc=78.7734
+  Weighted: gan=2.8538  l1=2.2708  perc=39.3867  (L1 x100, PERC x0.5)
+Epoch:  27
+Time: 146.78505039215088 sec, gen loss = 10094.1630859375, disc loss = 123.98542022705078.
+Time: 146.8s | gen=43.8877 disc=0.5391
+  Raw:      gan=2.9572  l1=0.0222  perc=77.4152
+  Weighted: gan=2.9572  l1=2.2229  perc=38.7076  (L1 x100, PERC x0.5)
+Epoch:  28
+Time: 148.28083086013794 sec, gen loss = 10045.2490234375, disc loss = 150.4700927734375.
+Time: 148.3s | gen=43.6750 disc=0.6542
+  Raw:      gan=2.7459  l1=0.0222  perc=77.4087
+  Weighted: gan=2.7459  l1=2.2248  perc=38.7043  (L1 x100, PERC x0.5)
+Epoch:  29
+Time: 146.92413592338562 sec, gen loss = 9925.373046875, disc loss = 154.2721405029297.
+Time: 146.9s | gen=43.1538 disc=0.6707
+  Raw:      gan=2.8001  l1=0.0220  perc=76.3125
+  Weighted: gan=2.8001  l1=2.1975  perc=38.1562  (L1 x100, PERC x0.5)
+Epoch:  30
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1819332].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.145894].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2746898].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1616813].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2921188].
+Time: 148.63489389419556 sec, gen loss = 9859.0751953125, disc loss = 126.47317504882812.
+Time: 148.6s | gen=42.8655 disc=0.5499
+  Raw:      gan=2.7975  l1=0.0220  perc=75.7337
+  Weighted: gan=2.7975  l1=2.2012  perc=37.8669  (L1 x100, PERC x0.5)
+Epoch:  31
+Time: 146.63908696174622 sec, gen loss = 10272.8115234375, disc loss = 136.16824340820312.
+Time: 146.6s | gen=44.6644 disc=0.5920
+  Raw:      gan=3.0137  l1=0.0223  perc=78.8349
+  Weighted: gan=3.0137  l1=2.2332  perc=39.4175  (L1 x100, PERC x0.5)
+Epoch:  32
+Time: 148.37804889678955 sec, gen loss = 9868.7158203125, disc loss = 129.0798797607422.
+Time: 148.4s | gen=42.9075 disc=0.5612
+  Raw:      gan=2.8353  l1=0.0215  perc=75.8521
+  Weighted: gan=2.8353  l1=2.1461  perc=37.9260  (L1 x100, PERC x0.5)
+Epoch:  33
+Time: 146.89155745506287 sec, gen loss = 9781.923828125, disc loss = 140.9842987060547.
+Time: 146.9s | gen=42.5301 disc=0.6130
+  Raw:      gan=2.7975  l1=0.0214  perc=75.1863
+  Weighted: gan=2.7975  l1=2.1394  perc=37.5932  (L1 x100, PERC x0.5)
+Epoch:  34
+Time: 148.12725472450256 sec, gen loss = 11502.0947265625, disc loss = 118.96542358398438.
+Time: 148.1s | gen=50.0091 disc=0.5172
+  Raw:      gan=3.2170  l1=0.0260  perc=88.3932
+  Weighted: gan=3.2170  l1=2.5955  perc=44.1966  (L1 x100, PERC x0.5)
+Epoch:  35
+Time: 146.72342324256897 sec, gen loss = 10143.1494140625, disc loss = 122.96436309814453.
+Time: 146.7s | gen=44.1007 disc=0.5346
+  Raw:      gan=3.0014  l1=0.0218  perc=77.8412
+  Weighted: gan=3.0014  l1=2.1786  perc=38.9206  (L1 x100, PERC x0.5)
+Epoch:  36
+Time: 148.03891682624817 sec, gen loss = 9589.0888671875, disc loss = 134.07833862304688.
+Time: 148.0s | gen=41.6917 disc=0.5829
+  Raw:      gan=2.8079  l1=0.0208  perc=73.5981
+  Weighted: gan=2.8079  l1=2.0848  perc=36.7991  (L1 x100, PERC x0.5)
+Epoch:  37
+Time: 147.28322958946228 sec, gen loss = 9773.0703125, disc loss = 153.16705322265625.
+Time: 147.3s | gen=42.4916 disc=0.6659
+  Raw:      gan=2.9028  l1=0.0208  perc=75.0108
+  Weighted: gan=2.9028  l1=2.0835  perc=37.5054  (L1 x100, PERC x0.5)
+Epoch:  38
+Time: 146.77435612678528 sec, gen loss = 9545.3876953125, disc loss = 138.61448669433594.
+Time: 146.8s | gen=41.5017 disc=0.6027
+  Raw:      gan=2.8598  l1=0.0205  perc=73.1819
+  Weighted: gan=2.8598  l1=2.0510  perc=36.5910  (L1 x100, PERC x0.5)
+Epoch:  39
+Time: 148.50401782989502 sec, gen loss = 9672.177734375, disc loss = 140.76934814453125.
+Time: 148.5s | gen=42.0529 disc=0.6120
+  Raw:      gan=2.8787  l1=0.0206  perc=74.2384
+  Weighted: gan=2.8787  l1=2.0550  perc=37.1192  (L1 x100, PERC x0.5)
+Epoch:  40
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0984547].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1222682].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.071616].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.077444].
+Time: 147.26993012428284 sec, gen loss = 9342.1025390625, disc loss = 151.5484161376953.
+Time: 147.3s | gen=40.6178 disc=0.6589
+  Raw:      gan=2.7123  l1=0.0200  perc=71.8012
+  Weighted: gan=2.7123  l1=2.0049  perc=35.9006  (L1 x100, PERC x0.5)
+Epoch:  41
+Time: 148.10444569587708 sec, gen loss = 9339.9248046875, disc loss = 123.76131439208984.
+Time: 148.1s | gen=40.6084 disc=0.5381
+  Raw:      gan=2.7035  l1=0.0199  perc=71.8291
+  Weighted: gan=2.7035  l1=1.9903  perc=35.9146  (L1 x100, PERC x0.5)
+Epoch:  42
+Time: 146.94939494132996 sec, gen loss = 10139.6875, disc loss = 153.37155151367188.
+Time: 147.0s | gen=44.0856 disc=0.6668
+  Raw:      gan=3.0200  l1=0.0216  perc=77.8018
+  Weighted: gan=3.0200  l1=2.1648  perc=38.9009  (L1 x100, PERC x0.5)
+Epoch:  43
+Time: 148.35266852378845 sec, gen loss = 9638.6083984375, disc loss = 126.23431396484375.
+Time: 148.4s | gen=41.9070 disc=0.5488
+  Raw:      gan=2.7167  l1=0.0204  perc=74.3027
+  Weighted: gan=2.7167  l1=2.0389  perc=37.1514  (L1 x100, PERC x0.5)
+Epoch:  44
+Time: 146.88655591011047 sec, gen loss = 9306.1875, disc loss = 169.85374450683594.
+Time: 146.9s | gen=40.4617 disc=0.7385
+  Raw:      gan=2.7085  l1=0.0196  perc=71.5800
+  Weighted: gan=2.7085  l1=1.9632  perc=35.7900  (L1 x100, PERC x0.5)
+Epoch:  45
+Time: 148.26899194717407 sec, gen loss = 9348.9345703125, disc loss = 146.92733764648438.
+Time: 148.3s | gen=40.6475 disc=0.6388
+  Raw:      gan=2.6610  l1=0.0197  perc=72.0262
+  Weighted: gan=2.6610  l1=1.9734  perc=36.0131  (L1 x100, PERC x0.5)
+Epoch:  46
+Time: 147.14069962501526 sec, gen loss = 9350.1669921875, disc loss = 124.0792236328125.
+Time: 147.1s | gen=40.6529 disc=0.5395
+  Raw:      gan=2.7133  l1=0.0195  perc=71.9737
+  Weighted: gan=2.7133  l1=1.9528  perc=35.9869  (L1 x100, PERC x0.5)
+Epoch:  47
+Time: 148.40382313728333 sec, gen loss = 9064.48828125, disc loss = 151.76405334472656.
+Time: 148.4s | gen=39.4108 disc=0.6598
+  Raw:      gan=2.7174  l1=0.0191  perc=69.5765
+  Weighted: gan=2.7174  l1=1.9052  perc=34.7882  (L1 x100, PERC x0.5)
+Epoch:  48
+Time: 146.80371117591858 sec, gen loss = 9249.1962890625, disc loss = 150.30563354492188.
+Time: 146.8s | gen=40.2139 disc=0.6535
+  Raw:      gan=2.7752  l1=0.0193  perc=71.0208
+  Weighted: gan=2.7752  l1=1.9283  perc=35.5104  (L1 x100, PERC x0.5)
+Epoch:  49
+Time: 147.1450526714325 sec, gen loss = 9017.53125, disc loss = 142.7389373779297.
+Time: 147.1s | gen=39.2067 disc=0.6206
+  Raw:      gan=2.6583  l1=0.0189  perc=69.3126
+  Weighted: gan=2.6583  l1=1.8921  perc=34.6563  (L1 x100, PERC x0.5)
+Epoch:  50
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0791526].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.189684].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0434406].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0766473].
+Time: 148.6836211681366 sec, gen loss = 9080.7548828125, disc loss = 144.9150390625.
+Time: 148.7s | gen=39.4815 disc=0.6301
+  Raw:      gan=2.7134  l1=0.0189  perc=69.7608
+  Weighted: gan=2.7134  l1=1.8877  perc=34.8804  (L1 x100, PERC x0.5)
+Epoch:  51
+Time: 146.81253600120544 sec, gen loss = 9880.310546875, disc loss = 88.74299621582031.
+Time: 146.8s | gen=42.9579 disc=0.3858
+  Raw:      gan=3.1665  l1=0.0204  perc=75.5102
+  Weighted: gan=3.1665  l1=2.0363  perc=37.7551  (L1 x100, PERC x0.5)
+Epoch:  52
+Time: 148.4292013645172 sec, gen loss = 9039.1181640625, disc loss = 145.59490966796875.
+Time: 148.4s | gen=39.3005 disc=0.6330
+  Raw:      gan=2.7103  l1=0.0186  perc=69.4513
+  Weighted: gan=2.7103  l1=1.8646  perc=34.7256  (L1 x100, PERC x0.5)
+Epoch:  53
+Time: 147.16077303886414 sec, gen loss = 8919.373046875, disc loss = 166.6494903564453.
+Time: 147.2s | gen=38.7799 disc=0.7246
+  Raw:      gan=2.7025  l1=0.0184  perc=68.4790
+  Weighted: gan=2.7025  l1=1.8379  perc=34.2395  (L1 x100, PERC x0.5)
+Epoch:  54
+Time: 148.51200461387634 sec, gen loss = 9333.578125, disc loss = 124.98929595947266.
+Time: 148.5s | gen=40.5808 disc=0.5434
+  Raw:      gan=2.8240  l1=0.0196  perc=71.5927
+  Weighted: gan=2.8240  l1=1.9604  perc=35.7964  (L1 x100, PERC x0.5)
+Epoch:  55
+Time: 147.17561030387878 sec, gen loss = 10208.6015625, disc loss = 138.2322998046875.
+Time: 147.2s | gen=44.3852 disc=0.6010
+  Raw:      gan=3.2474  l1=0.0207  perc=78.1365
+  Weighted: gan=3.2474  l1=2.0696  perc=39.0682  (L1 x100, PERC x0.5)
+Epoch:  56
+Time: 148.66037130355835 sec, gen loss = 9025.1416015625, disc loss = 135.30874633789062.
+Time: 148.7s | gen=39.2397 disc=0.5883
+  Raw:      gan=2.7087  l1=0.0184  perc=69.3771
+  Weighted: gan=2.7087  l1=1.8425  perc=34.6885  (L1 x100, PERC x0.5)
+Epoch:  57
+Time: 147.24605703353882 sec, gen loss = 8724.6650390625, disc loss = 142.95420837402344.
+Time: 147.2s | gen=37.9333 disc=0.6215
+  Raw:      gan=2.7008  l1=0.0178  perc=66.8956
+  Weighted: gan=2.7008  l1=1.7847  perc=33.4478  (L1 x100, PERC x0.5)
+Epoch:  58
+Time: 148.51862239837646 sec, gen loss = 8909.412109375, disc loss = 126.05846405029297.
+Time: 148.5s | gen=38.7366 disc=0.5481
+  Raw:      gan=2.6848  l1=0.0181  perc=68.4848
+  Weighted: gan=2.6848  l1=1.8094  perc=34.2424  (L1 x100, PERC x0.5)
+Epoch:  59
+Time: 147.15683674812317 sec, gen loss = 8838.0087890625, disc loss = 145.9127197265625.
+Time: 147.2s | gen=38.4261 disc=0.6344
+  Raw:      gan=2.7230  l1=0.0180  perc=67.8141
+  Weighted: gan=2.7230  l1=1.7961  perc=33.9070  (L1 x100, PERC x0.5)
+Epoch:  60
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0761085].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2921735].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0423898].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.110933].
+Time: 148.82584357261658 sec, gen loss = 8712.51171875, disc loss = 137.6300048828125.
+Time: 148.8s | gen=37.8805 disc=0.5984
+  Raw:      gan=2.7102  l1=0.0177  perc=66.7980
+  Weighted: gan=2.7102  l1=1.7713  perc=33.3990  (L1 x100, PERC x0.5)
+Epoch:  61
+Time: 147.06574630737305 sec, gen loss = 8620.2548828125, disc loss = 163.75656127929688.
+Time: 147.1s | gen=37.4794 disc=0.7120
+  Raw:      gan=2.6394  l1=0.0176  perc=66.1562
+  Weighted: gan=2.6394  l1=1.7619  perc=33.0781  (L1 x100, PERC x0.5)
+Epoch:  62
+Time: 147.022620677948 sec, gen loss = 8661.09765625, disc loss = 136.52149963378906.
+Time: 147.0s | gen=37.6569 disc=0.5936
+  Raw:      gan=2.6345  l1=0.0176  perc=66.5310
+  Weighted: gan=2.6345  l1=1.7570  perc=33.2655  (L1 x100, PERC x0.5)
+Epoch:  63
+Time: 148.49859595298767 sec, gen loss = 8833.212890625, disc loss = 122.95610809326172.
+Time: 148.5s | gen=38.4053 disc=0.5346
+  Raw:      gan=2.7309  l1=0.0178  perc=67.7919
+  Weighted: gan=2.7309  l1=1.7784  perc=33.8960  (L1 x100, PERC x0.5)
+Epoch:  64
+Time: 146.97992587089539 sec, gen loss = 8569.4716796875, disc loss = 149.3027801513672.
+Time: 147.0s | gen=37.2586 disc=0.6491
+  Raw:      gan=2.6483  l1=0.0174  perc=65.7375
+  Weighted: gan=2.6483  l1=1.7416  perc=32.8688  (L1 x100, PERC x0.5)
+Epoch:  65
+Time: 148.65259742736816 sec, gen loss = 8642.9228515625, disc loss = 158.09043884277344.
+Time: 148.7s | gen=37.5779 disc=0.6873
+  Raw:      gan=2.7893  l1=0.0174  perc=66.0913
+  Weighted: gan=2.7893  l1=1.7430  perc=33.0456  (L1 x100, PERC x0.5)
+Epoch:  66
+Time: 147.15330982208252 sec, gen loss = 8496.751953125, disc loss = 132.29078674316406.
+Time: 147.2s | gen=36.9424 disc=0.5752
+  Raw:      gan=2.6719  l1=0.0172  perc=65.1027
+  Weighted: gan=2.6719  l1=1.7191  perc=32.5514  (L1 x100, PERC x0.5)
+Epoch:  67
+Time: 148.54897618293762 sec, gen loss = 8533.6337890625, disc loss = 147.55235290527344.
+Time: 148.5s | gen=37.1028 disc=0.6415
+  Raw:      gan=2.7122  l1=0.0173  perc=65.3304
+  Weighted: gan=2.7122  l1=1.7253  perc=32.6652  (L1 x100, PERC x0.5)
+Epoch:  68
+Time: 147.23301768302917 sec, gen loss = 8589.28515625, disc loss = 113.85395050048828.
+Time: 147.2s | gen=37.3447 disc=0.4950
+  Raw:      gan=2.7144  l1=0.0173  perc=65.8066
+  Weighted: gan=2.7144  l1=1.7270  perc=32.9033  (L1 x100, PERC x0.5)
+Epoch:  69
+Time: 148.67530512809753 sec, gen loss = 8445.455078125, disc loss = 175.7021484375.
+Time: 148.7s | gen=36.7194 disc=0.7639
+  Raw:      gan=2.6500  l1=0.0171  perc=64.7230
+  Weighted: gan=2.6500  l1=1.7078  perc=32.3615  (L1 x100, PERC x0.5)
+Epoch:  70
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0672673].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2271322].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.02207].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1704909].
+Time: 147.5301365852356 sec, gen loss = 8349.1669921875, disc loss = 158.3404998779297.
+Time: 147.5s | gen=36.3007 disc=0.6884
+  Raw:      gan=2.7153  l1=0.0170  perc=63.7781
+  Weighted: gan=2.7153  l1=1.6963  perc=31.8890  (L1 x100, PERC x0.5)
+Epoch:  71
+Time: 148.4140269756317 sec, gen loss = 8432.666015625, disc loss = 134.78683471679688.
+Time: 148.4s | gen=36.6638 disc=0.5860
+  Raw:      gan=2.6919  l1=0.0171  perc=64.5244
+  Weighted: gan=2.6919  l1=1.7097  perc=32.2622  (L1 x100, PERC x0.5)
+Epoch:  72
+Time: 147.23161363601685 sec, gen loss = 8340.599609375, disc loss = 141.65188598632812.
+Time: 147.2s | gen=36.2635 disc=0.6159
+  Raw:      gan=2.7662  l1=0.0169  perc=63.6125
+  Weighted: gan=2.7662  l1=1.6910  perc=31.8062  (L1 x100, PERC x0.5)
+Epoch:  73
+Time: 149.6056227684021 sec, gen loss = 8696.064453125, disc loss = 108.93169403076172.
+Time: 149.6s | gen=37.8090 disc=0.4736
+  Raw:      gan=2.8314  l1=0.0175  perc=66.4572
+  Weighted: gan=2.8314  l1=1.7490  perc=33.2286  (L1 x100, PERC x0.5)
+Epoch:  74
+Time: 151.18191242218018 sec, gen loss = 8392.4453125, disc loss = 145.7830047607422.
+Time: 151.2s | gen=36.4889 disc=0.6338
+  Raw:      gan=2.8468  l1=0.0170  perc=63.8875
+  Weighted: gan=2.8468  l1=1.6984  perc=31.9437  (L1 x100, PERC x0.5)
+Epoch:  75
+Time: 148.58528757095337 sec, gen loss = 8315.8896484375, disc loss = 151.1683349609375.
+Time: 148.6s | gen=36.1560 disc=0.6573
+  Raw:      gan=2.6543  l1=0.0169  perc=63.6184
+  Weighted: gan=2.6543  l1=1.6926  perc=31.8092  (L1 x100, PERC x0.5)
+Epoch:  76
+Time: 150.2496223449707 sec, gen loss = 8355.2265625, disc loss = 138.21481323242188.
+Time: 150.3s | gen=36.3271 disc=0.6009
+  Raw:      gan=2.7339  l1=0.0169  perc=63.8047
+  Weighted: gan=2.7339  l1=1.6908  perc=31.9023  (L1 x100, PERC x0.5)
+Epoch:  77
+Time: 148.78877758979797 sec, gen loss = 8239.109375, disc loss = 178.51011657714844.
+Time: 148.8s | gen=35.8222 disc=0.7761
+  Raw:      gan=2.6038  l1=0.0168  perc=63.0789
+  Weighted: gan=2.6038  l1=1.6790  perc=31.5395  (L1 x100, PERC x0.5)
+Epoch:  78
+Time: 150.93181896209717 sec, gen loss = 8091.9697265625, disc loss = 138.68565368652344.
+Time: 150.9s | gen=35.1825 disc=0.6030
+  Raw:      gan=2.6984  l1=0.0165  perc=61.6621
+  Weighted: gan=2.6984  l1=1.6530  perc=30.8311  (L1 x100, PERC x0.5)
+Epoch:  79
+Time: 148.728045463562 sec, gen loss = 8150.6455078125, disc loss = 125.51119232177734.
+Time: 148.7s | gen=35.4376 disc=0.5457
+  Raw:      gan=2.7162  l1=0.0166  perc=62.1160
+  Weighted: gan=2.7162  l1=1.6634  perc=31.0580  (L1 x100, PERC x0.5)
+Epoch:  80
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.090612].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.3070438].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0388998].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.086513].
+Time: 150.59062957763672 sec, gen loss = 8165.63720703125, disc loss = 161.29087829589844.
+Time: 150.6s | gen=35.5028 disc=0.7013
+  Raw:      gan=2.7921  l1=0.0167  perc=62.0902
+  Weighted: gan=2.7921  l1=1.6655  perc=31.0451  (L1 x100, PERC x0.5)
+Epoch:  81
+Time: 148.7816424369812 sec, gen loss = 9206.466796875, disc loss = 87.72955322265625.
+Time: 148.8s | gen=40.0281 disc=0.3814
+  Raw:      gan=3.2061  l1=0.0186  perc=69.9255
+  Weighted: gan=3.2061  l1=1.8593  perc=34.9628  (L1 x100, PERC x0.5)
+Epoch:  82
+Time: 149.46684098243713 sec, gen loss = 8346.0283203125, disc loss = 189.64500427246094.
+Time: 149.5s | gen=36.2871 disc=0.8245
+  Raw:      gan=2.8320  l1=0.0169  perc=63.5300
+  Weighted: gan=2.8320  l1=1.6901  perc=31.7650  (L1 x100, PERC x0.5)
+Epoch:  83
+Time: 147.1161117553711 sec, gen loss = 8430.2275390625, disc loss = 118.18157958984375.
+Time: 147.1s | gen=36.6532 disc=0.5138
+  Raw:      gan=2.8485  l1=0.0172  perc=64.1628
+  Weighted: gan=2.8485  l1=1.7233  perc=32.0814  (L1 x100, PERC x0.5)
+Epoch:  84
+Time: 148.41984152793884 sec, gen loss = 8486.62109375, disc loss = 129.46133422851562.
+Time: 148.4s | gen=36.8984 disc=0.5629
+  Raw:      gan=2.9576  l1=0.0171  perc=64.4627
+  Weighted: gan=2.9576  l1=1.7094  perc=32.2314  (L1 x100, PERC x0.5)
+Epoch:  85
+Time: 146.8980085849762 sec, gen loss = 8178.7275390625, disc loss = 127.9723892211914.
+Time: 146.9s | gen=35.5597 disc=0.5564
+  Raw:      gan=2.8175  l1=0.0166  perc=62.1669
+  Weighted: gan=2.8175  l1=1.6587  perc=31.0835  (L1 x100, PERC x0.5)
+Epoch:  86
+Time: 147.9246311187744 sec, gen loss = 8317.896484375, disc loss = 126.84011840820312.
+Time: 147.9s | gen=36.1648 disc=0.5515
+  Raw:      gan=2.8352  l1=0.0168  perc=63.2965
+  Weighted: gan=2.8352  l1=1.6813  perc=31.6483  (L1 x100, PERC x0.5)
+Epoch:  87
+Time: 147.49455094337463 sec, gen loss = 8096.5869140625, disc loss = 122.72309112548828.
+Time: 147.5s | gen=35.2026 disc=0.5336
+  Raw:      gan=2.9000  l1=0.0165  perc=61.3059
+  Weighted: gan=2.9000  l1=1.6497  perc=30.6529  (L1 x100, PERC x0.5)
+Epoch:  88
+Time: 146.95960450172424 sec, gen loss = 9001.59765625, disc loss = 140.00238037109375.
+Time: 147.0s | gen=39.1374 disc=0.6087
+  Raw:      gan=3.3324  l1=0.0183  perc=67.9439
+  Weighted: gan=3.3324  l1=1.8330  perc=33.9719  (L1 x100, PERC x0.5)
+Epoch:  89
+Time: 148.23815083503723 sec, gen loss = 8123.7890625, disc loss = 149.5750732421875.
+Time: 148.2s | gen=35.3208 disc=0.6503
+  Raw:      gan=2.9191  l1=0.0166  perc=61.4919
+  Weighted: gan=2.9191  l1=1.6557  perc=30.7460  (L1 x100, PERC x0.5)
+Epoch:  90
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0740337].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.1707146].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.03598].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0757239].
+Time: 147.48332905769348 sec, gen loss = 7879.04931640625, disc loss = 117.28714752197266.
+Time: 147.5s | gen=34.2567 disc=0.5099
+  Raw:      gan=2.8280  l1=0.0162  perc=59.6085
+  Weighted: gan=2.8280  l1=1.6245  perc=29.8042  (L1 x100, PERC x0.5)
+Epoch:  91
+Time: 148.03980827331543 sec, gen loss = 8042.03466796875, disc loss = 110.78756713867188.
+Time: 148.0s | gen=34.9654 disc=0.4817
+  Raw:      gan=2.8942  l1=0.0164  perc=60.8563
+  Weighted: gan=2.8942  l1=1.6430  perc=30.4281  (L1 x100, PERC x0.5)
+Epoch:  92
+Time: 148.27298378944397 sec, gen loss = 8156.634765625, disc loss = 138.40435791015625.
+Time: 148.3s | gen=35.4636 disc=0.6018
+  Raw:      gan=2.9859  l1=0.0167  perc=61.6103
+  Weighted: gan=2.9859  l1=1.6725  perc=30.8051  (L1 x100, PERC x0.5)
+Epoch:  93
+Time: 151.26274991035461 sec, gen loss = 7940.5458984375, disc loss = 135.90602111816406.
+Time: 151.3s | gen=34.5241 disc=0.5909
+  Raw:      gan=2.9170  l1=0.0164  perc=59.9343
+  Weighted: gan=2.9170  l1=1.6400  perc=29.9671  (L1 x100, PERC x0.5)
+Epoch:  94
+Time: 148.90948152542114 sec, gen loss = 7927.2744140625, disc loss = 138.20620727539062.
+Time: 148.9s | gen=34.4664 disc=0.6009
+  Raw:      gan=2.9279  l1=0.0164  perc=59.7989
+  Weighted: gan=2.9279  l1=1.6390  perc=29.8995  (L1 x100, PERC x0.5)
+Epoch:  95
+Time: 150.19212436676025 sec, gen loss = 7905.1826171875, disc loss = 125.69259643554688.
+Time: 150.2s | gen=34.3704 disc=0.5465
+  Raw:      gan=2.8951  l1=0.0163  perc=59.6964
+  Weighted: gan=2.8951  l1=1.6271  perc=29.8482  (L1 x100, PERC x0.5)
+Epoch:  96
+Time: 148.5547297000885 sec, gen loss = 7882.25634765625, disc loss = 144.47259521484375.
+Time: 148.6s | gen=34.2707 disc=0.6281
+  Raw:      gan=2.7322  l1=0.0164  perc=59.8067
+  Weighted: gan=2.7322  l1=1.6351  perc=29.9034  (L1 x100, PERC x0.5)
+Epoch:  97
+Time: 151.16947317123413 sec, gen loss = 8254.673828125, disc loss = 123.56175994873047.
+Time: 151.2s | gen=35.8899 disc=0.5372
+  Raw:      gan=3.1224  l1=0.0169  perc=62.1453
+  Weighted: gan=3.1224  l1=1.6949  perc=31.0726  (L1 x100, PERC x0.5)
+Epoch:  98
+Time: 148.75722646713257 sec, gen loss = 7955.27001953125, disc loss = 122.37606811523438.
+Time: 148.8s | gen=34.5881 disc=0.5321
+  Raw:      gan=2.9178  l1=0.0165  perc=60.0477
+  Weighted: gan=2.9178  l1=1.6465  perc=30.0239  (L1 x100, PERC x0.5)
+Epoch:  99
+Time: 149.7919683456421 sec, gen loss = 7907.59814453125, disc loss = 127.72818756103516.
+Time: 149.8s | gen=34.3809 disc=0.5553
+  Raw:      gan=2.9753  l1=0.0164  perc=59.5348
+  Weighted: gan=2.9753  l1=1.6382  perc=29.7674  (L1 x100, PERC x0.5)
+Epoch:  100
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0855786].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.2861574].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.0293776].
+Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers). Got range [0.0..1.064525].
+Time: 149.75362849235535 sec, gen loss = 7813.88671875, disc loss = 144.9276885986328.
+Time: 149.8s | gen=33.9734 disc=0.6301
+  Raw:      gan=2.8918  l1=0.0163  perc=58.9012
+  Weighted: gan=2.8918  l1=1.6310  perc=29.4506  (L1 x100, PERC x0.5)
+Total training time: 14827.31 sec (04h 07m 07.31s)
+100%|| 26/26 [00:09<00:00,  2.67it/s]
+2522.9165883781084 0.4052747850337339 0.7540380235874768
+100%|| 26/26 [00:10<00:00,  2.44it/s]
+357.4848249098831 0.1315972891914438 0.9028703833691076
