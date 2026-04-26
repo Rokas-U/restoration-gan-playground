@@ -289,7 +289,7 @@ def train_step(input_image, target, epoch):
 
     generator_optimizer.apply_gradients(zip(generator_gradients,generator.trainable_variables))
     discriminator_optimizer.apply_gradients(zip(discriminator_gradients,discriminator.trainable_variables))
-    return gen_total_loss, disc_loss
+    return gen_total_loss, disc_loss, gen_gan_loss, gen_l1_loss
 
 # %% [markdown] {"jupyter":{"outputs_hidden":false}}
 # A set of 5 images are taken from the test subset and predictions are made on those 5 images which is viewed after every 10 epochs.
@@ -330,14 +330,31 @@ def fit(train_ds, epochs):
         print("Epoch: ", epoch)
         generator_loss = 0
         discriminator_loss = 0
+        gan_loss_accum = 0
+        l1_loss_accum = 0
+        n_batches = 0
+
         for n, (target, input_image) in train_ds.enumerate():
-            gen_total_loss, disc_loss = train_step(input_image, target, epoch)
+            gen_total_loss, disc_loss, gan_l, l1_l = train_step(input_image, target, epoch)
             generator_loss += gen_total_loss
             discriminator_loss += disc_loss
+            gan_loss_accum += gan_l
+            l1_loss_accum += l1_l
+            n_batches += 1
         if epoch%10 == 0:
             generate_samples(epoch)
 
         print ('Time: {} sec, gen loss = {}, disc loss = {}.'.format(time.time()-start, generator_loss, discriminator_loss))
+        # Report per-batch averages of each component, both raw and weighted.
+        # The weighted values are what the optimizer actually sees; compare these.
+        avg_gan = gan_loss_accum / n_batches
+        avg_l1 = l1_loss_accum / n_batches
+        print('Time: {:.1f}s | gen={:.4f} disc={:.4f}'.format(
+            time.time()-start, generator_loss/n_batches, discriminator_loss/n_batches))
+        print('  Raw:      gan={:.4f}  l1={:.4f}'.format(
+            avg_gan, avg_l1))
+        print('  Weighted: gan={:.4f}  l1={:.4f}  (L1 x{})'.format(
+            avg_gan, LAMBDA * avg_l1, LAMBDA))
 
     total_time = time.time() - total_start
     hours, rem = divmod(total_time, 3600)
