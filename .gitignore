@@ -1,2 +1,4 @@
 .venv/
 humanface8000/
+.DS_Store
+**/.DS_Store
